@@ -68,6 +68,10 @@ Vous pourrez naviguer dans la partie administrateur de l'application.
 
 
 ---
-
+Note obtenue : 
+  * Utilisation de la méthode agile : 14
+  * Qualité logiciel : 17
+  * Soutenance de présentation : 17
+    
 Fait par une équipe de 4 en 120h en suivant les méthodes agiles (scrum)
 Christopher VOISIN
