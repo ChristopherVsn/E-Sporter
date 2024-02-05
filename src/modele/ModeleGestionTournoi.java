@@ -217,11 +217,17 @@ public class ModeleGestionTournoi {
 		this.arbitresSelectionnes.remove(arbitre);
 		this.arbitresDisponibles.add(arbitre);
 	}
-
+	/**
+	 * Renvoi la liste de tout les arbitres
+	 * @return List<Arbitre>
+	 */
 	public List<Arbitre> getAllArbitres() {
 		return this.allArbitres;
 	}
 
+	/**
+	 * Genere la liste des matches du tournois dans la base de données
+	 */
 	public void generateMatch() {
 		List<EquipeSaison> equipes = this.equipesParticipantes;
 		int n = 0;

@@ -17,13 +17,25 @@ import modele.Match;
 import modele.Phase;
 import modele.Tournoi;
 
+/**
+ * Implémentation de l'interface MatchsDAO fournissant des opérations de gestion
+ * des matchs dans la base de données.
+ */
 public class ImpMatchsDAO implements MatchsDAO {
     private Connection c;
 
+    /**
+     * Constructeur par défaut qui initialise la connexion à la base de données.
+     */
     public ImpMatchsDAO() {
         this.c = ConnexionDB.getConnexionDB().getConnexion();
     }
     
+    /**
+     * Récupère tous les matchs présents dans la base de données.
+     *
+     * @return Une liste de tous les matchs.
+     */
     @Override
     public List<Match> getAll() {
         List<Match> matchs = new ArrayList<>();
@@ -65,6 +77,12 @@ public class ImpMatchsDAO implements MatchsDAO {
         return matchs;
     }
 
+    /**
+     * Récupère un match à partir de son identifiant.
+     *
+     * @param id Identifiant du match.
+     * @return Un objet Optional contenant le match correspondant à l'identifiant.
+     */
     @Override
     public Optional<Match> getById(Integer... id) {
         Optional<Match> match = Optional.empty();
@@ -95,6 +113,12 @@ public class ImpMatchsDAO implements MatchsDAO {
         return match;
     }
 
+    /**
+     * Ajoute un match à la base de données.
+     *
+     * @param value Le match à ajouter.
+     * @return true si l'ajout a réussi, false sinon.
+     */
     @Override
     public boolean add(Match value) {
         try (Statement statement = c.createStatement()) {
@@ -109,6 +133,12 @@ public class ImpMatchsDAO implements MatchsDAO {
         return false;
     }
 
+    /**
+     * Met à jour les informations d'un match dans la base de données.
+     *
+     * @param value Le match à mettre à jour.
+     * @return true si la mise à jour a réussi, false sinon.
+     */
     @Override
     public boolean update(Match value) {
         try (Statement statement = c.createStatement()) {
@@ -128,6 +158,12 @@ public class ImpMatchsDAO implements MatchsDAO {
         return true;
     }
 
+    /**
+     * Supprime un match de la base de données.
+     *
+     * @param value Le match à supprimer.
+     * @return true si la suppression a réussi, false sinon.
+     */
     @Override
     public boolean delete(Match value) {
         try (Statement statement = c.createStatement()) {
@@ -139,6 +175,12 @@ public class ImpMatchsDAO implements MatchsDAO {
         return false;
     }
 
+    /**
+     * Récupère tous les matchs associés à un tournoi.
+     *
+     * @param tournoi Le tournoi pour lequel on veut les matchs.
+     * @return Une liste des matchs du tournoi.
+     */
     public List<Match> getMatchsByTournoi(Tournoi tournoi) {
         List<Match> matchs = new ArrayList<>();
         ImpTournoiDAO tournoiDAO = new ImpTournoiDAO();
@@ -180,6 +222,14 @@ public class ImpMatchsDAO implements MatchsDAO {
         return matchs;
     }
 
+    /**
+     * Modifie le score d'une équipe pour un match donné.
+     *
+     * @param idMatch   Identifiant du match.
+     * @param equipe    Nom de l'équipe.
+     * @param newScore  Nouveau score de l'équipe.
+     * @param nomTournoi Nom du tournoi.
+     */	
     public void setScoreEquipe(int idMatch, String equipe, int newScore, String nomTournoi) {
         ImpTournoiDAO tournoiDAO = new ImpTournoiDAO();
         try (Statement statement = c.createStatement()) {
@@ -192,7 +242,13 @@ public class ImpMatchsDAO implements MatchsDAO {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Récupère les scores des équipes pour tous les matchs d'un tournoi.
+     *
+     * @param nomTournoi Nom du tournoi.
+     * @return Une chaîne de caractères représentant les scores des équipes pour tous les matchs du tournoi.
+     */
     public String scoreEquipeMatchs(String nomTournoi) {
         String res = "";
         ImpTournoiDAO tournoiDAO = new ImpTournoiDAO();
@@ -209,6 +265,13 @@ public class ImpMatchsDAO implements MatchsDAO {
         return res;
     }
 
+    /**
+     * Récupère le nombre de matchs joués par une équipe dans un tournoi.
+     *
+     * @param nomEquipe Nom de l'équipe.
+     * @param idTournoi Identifiant du tournoi.
+     * @return Le nombre de matchs joués par l'équipe dans le tournoi.
+     */
 	public int getNbMatchsPlayed(String nomEquipe, int idTournoi) {
 		try (Statement statement = c.createStatement()) {
             String selectQuery = "SELECT count(*) as nb FROM Matchs WHERE IdTournoi = "
@@ -223,6 +286,13 @@ public class ImpMatchsDAO implements MatchsDAO {
 		return -1;
 	}
 	
+	/**
+     * Récupère le nombre de matchs remportés par une équipe dans un tournoi.
+     *
+     * @param nomEquipe Nom de l'équipe.
+     * @param idTournoi Identifiant du tournoi.
+     * @return Le nombre de matchs remportés par l'équipe dans le tournoi.
+     */
 	public int getNbMatchsWin(String nomEquipe, int idTournoi) {
 		try (Statement statement = c.createStatement()) {
             String selectQuery = "SELECT count(*) as nb FROM Matchs WHERE IdTournoi = "
@@ -237,6 +307,12 @@ public class ImpMatchsDAO implements MatchsDAO {
 		return -1;
 	}
 	
+	/**
+     * Récupère le match de la finale d'un tournoi.
+     *
+     * @param idTournoi Identifiant du tournoi.
+     * @return Le match de la finale du tournoi, ou null s'il n'y a pas encore de finale.
+     */
     public Match getFinal(int idTournoi) {
         ImpTournoiDAO tournoiDAO = new ImpTournoiDAO();
         Tournoi t = tournoiDAO.getById(idTournoi).get();

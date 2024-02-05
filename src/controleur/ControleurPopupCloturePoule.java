@@ -34,11 +34,4 @@ public class ControleurPopupCloturePoule implements ActionListener {
 				break;
 		}
 	}
-
-	/**
-	 * @return la liste des équipes de la saison du modele
-	 */
-	// public List<EquipeSaison> getAll() throws Exception {
-	// return this.modele.getAll();
-	// }
 }

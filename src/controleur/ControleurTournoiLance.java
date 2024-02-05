@@ -45,14 +45,23 @@ public class ControleurTournoiLance implements ActionListener{
 		}
 	}
 	
+	/**
+	 * @return la liste des équipes EquipeTournoi du tournoi en cours
+	 */
 	public List<EquipeTournoi> getEquipesTournoi(){
 		return this.model.getEquipesTournoi();
 	}
 	
+	/**
+	 * @return la Phase du tournoi en cours
+	 */
 	public Phase getPhaseEnCours() {
 		return this.model.getPhase();
 	}
 
+	/**
+	 * @return le String de la finale du tournoi
+	 */
 	public String getFinale() {
 		return this.model.getEquipesFinale();
 	}

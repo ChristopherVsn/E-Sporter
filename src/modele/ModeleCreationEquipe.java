@@ -8,7 +8,9 @@ import org.apache.derby.tools.sysinfo;
 
 import DAO.ImpEquipeDAO;
 import DAO.ImpJoueurDAO;
-
+/**
+ * Modèle facilitant la création d'une équipe.
+ */
 public class ModeleCreationEquipe {
 
 	private List<Equipe> equipesNonInscrites;
@@ -16,8 +18,8 @@ public class ModeleCreationEquipe {
 	private ImpJoueurDAO impJoueurDAO;
 
 	/**
-	 * Modele permettant la création d'une équipe
-	 */
+     * Constructeur du modèle permettant la création d'une équipe.
+     */
 	public ModeleCreationEquipe() {
 		this.impEquipeDAO = new ImpEquipeDAO();
 		this.impJoueurDAO = new ImpJoueurDAO();
@@ -25,11 +27,14 @@ public class ModeleCreationEquipe {
 	}
 
 	/**
-	 * ajoute une équipe à la base de données
-	 * @param equipe à ajouter à la base de données
-	 * @return true si ajout de l'équipe a bien était enregistrer dans la base de données
-	 */
-	public int addEquipe(EquipeSaison equipe)  {
+     * Ajoute une équipe à la base de données.
+     * 
+     * @param equipe à ajouter à la base de données
+     * @return 0 si l'ajout de l'équipe a bien été enregistré dans la base de données,
+     *         1 en cas d'échec d'ajout, 2 si l'équipe appartient à une saison
+     *         existante, 3 si l'équipe existe déjà et ses joueurs ont été mis à jour.
+     */
+	public int addEquipe(EquipeSaison equipe) {
 		boolean existe = false;
 		boolean presentSaison = false;
 		for (Equipe e : this.impEquipeDAO.getAll()) {
@@ -45,29 +50,31 @@ public class ModeleCreationEquipe {
 		if (!presentSaison) {
 			if (!existe) {
 				if (this.impEquipeDAO.add(equipe)) {
+					System.out.println("ok");
 					return 0;
 				} else {
 					return 1;
 				}
-			} else {				
-				if( this.impEquipeDAO.addEquipeSaison(equipe) && this.impEquipeDAO.clearJoueurInEquipe(equipe)) {
+			} else {
+				if (this.impEquipeDAO.addEquipeSaison(equipe) && this.impEquipeDAO.clearJoueurInEquipe(equipe)) {
 					this.equipesNonInscrites.remove(equipe);
-					System.out.println("ok");
 					return 0;
-				}else {
-					System.out.println("wtf");
+				} else {
 					return 3;
 				}
 			}
 		}
 		return 2;
 	}
-	
+
 	/**
-	 * vérifie s'il n'y a pas la présence de doublons dans la liste de joueurs et que chaque pseudo joueur ne dépasse pas 20 caractères
-	 * @param liste de joueurs
-	 * @return 0 si toute joueurs respectent les conditions, 1 si doublon et 2 si un joueur à plus de 20 caractères
-	 */
+     * Vérifie s'il n'y a pas de doublons dans la liste de joueurs et que chaque
+     * pseudo joueur ne dépasse pas 20 caractères.
+     * 
+     * @param joueur liste de joueurs
+     * @return 0 si tous les joueurs respectent les conditions, 1 s'il y a un doublon,
+     *         2 si un joueur a plus de 20 caractères.
+     */
 	public int testJoueurSaisie(List<Joueur> joueur) {
 		int listeJoueursValide = 0;
 		for (int i = 0; i < joueur.size(); i++) {
@@ -82,67 +89,86 @@ public class ModeleCreationEquipe {
 		}
 		return listeJoueursValide;
 	}
-	
+
 	/**
-	 * transforme une liste de pseudo de joueurs en liste de Joueurs
-	 * @param liste de pseudo de jouer
-	 * @param nom de l'équipe des joueurs
-	 * @return une liste de Joueurs
-	 */
-	public List<Joueur> stringToJoueur(List<String> joueur, String nomEquipe){
+     * Transforme une liste de pseudos de joueurs en liste de Joueurs.
+     * 
+     * @param joueur     liste de pseudos de joueurs
+     * @param nomEquipe  nom de l'équipe des joueurs
+     * @return une liste de Joueurs
+     */
+	public List<Joueur> stringToJoueur(List<String> joueur, String nomEquipe) {
 		List<Joueur> joueurs = new ArrayList<>();
 		for (int i = 0; i < joueur.size(); i++) {
-			joueurs.add(new Joueur(joueur.get(i),nomEquipe));
+			joueurs.add(new Joueur(joueur.get(i), nomEquipe));
 		}
 		return joueurs;
 	}
 
 	/**
-	 * @return liste des équipes non inscrites a la saison en cours
-	 */
+     * Renvoie la liste des équipes non inscrites à la saison.
+     * 
+     * @return List<Equipe>
+     */
 	public List<Equipe> getEquipesNonInscrites() {
-		return this.equipesNonInscrites;
+		return this.impEquipeDAO.getEquipesNonInscrites();
 	}
 
 	/**
-	 * @return la liste de tous les équipes inscrites à la base de données
-	 */
+     * Retourne la liste de toutes les équipes inscrites à la base de données.
+     * 
+     * @return List<Equipe>
+     */
 	public List<Equipe> getAllEquipes() {
 		return this.impEquipeDAO.getAll();
 	}
 
 	/**
-	 * ajoute à la base de données les joueurs d'une équipe
-	 * @param listent des joueurs à jouter
-	 * @return un String "enregistrait" si tous les joueurs on pue être ajouté à la base donnée sinon le nom du joueur qui n'a pas pu être ajouté
+	 * Vérifie la validité des joueurs avant leur ajout à la base de données.
+	 * 
+	 * @param joueurs liste des joueurs à vérifier
+	 * @return "true" si tous les joueurs sont valides, sinon le pseudo du premier joueur
+	 *         invalide rencontré.
 	 */
-	public String addJoueurs(List<Joueur> joueurs) {
+	public String joueurValide(List<Joueur> joueurs) {
 		boolean ok = true;
-		String error = "";
+		String error = "true";
 		int i = 0;
 		int j;
 		while (i < joueurs.size() && ok) {
 			j = this.impJoueurDAO.existeInSaison(joueurs.get(i));
+			System.out.println(j);
 			if (j != 0 && j != 1) {
 				error = joueurs.get(i).getPseudo();
 				ok = false;
 			}
 			i++;
 		}
-		if(ok) {
-			for (Joueur joueur : joueurs) {
-				this.addJoueur(joueur);
-			}
-			error = "enregistrer";
-		}
 		return error;
 	}
 
 	/**
-	 * ajout du joueur à la base donnée
-	 * @param joueur
-	 * @return true si le joueur a bien peu être ajouté à la base donnée
-	 */
+     * Ajoute à la base de données les joueurs d'une équipe.
+     * 
+     * @param joueurs liste des joueurs à ajouter
+     * @return true si tous les joueurs ont pu être ajoutés à la base de données,
+     *         false sinon.
+     */
+	public boolean addJoueurs(List<Joueur> joueurs) {
+		for (Joueur joueur : joueurs) {
+			if (!this.addJoueur(joueur)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+     * Ajoute le joueur à la base de données.
+     * 
+     * @param joueur joueur à ajouter
+     * @return true si le joueur a bien été ajouté à la base de données, false sinon.
+     */
 	private boolean addJoueur(Joueur joueur) {
 		try {
 			int i = this.impJoueurDAO.existeInSaison(joueur);
@@ -163,10 +189,12 @@ public class ModeleCreationEquipe {
 	}
 
 	/**
-	 * @param nom de l'équipe à retourner
-	 * @return l'équipe sinon null
-	 */
-	public Equipe getEquipeByName(String nomEquipe)  {
+     * Récupère l'équipe par son nom.
+     * 
+     * @param nomEquipe nom de l'équipe à retourner
+     * @return l'équipe correspondante, sinon null.
+     */
+	public Equipe getEquipeByName(String nomEquipe) {
 		for (Equipe e : this.impEquipeDAO.getAll()) {
 			if (e.getNom().equals(nomEquipe)) {
 				return e;
@@ -176,15 +204,16 @@ public class ModeleCreationEquipe {
 	}
 
 	/**
-	 * @param nom de l'équipe
-	 * @return le world rank de l'année passé de l'équipe mise en paramètre sinon 1000
-	 */
+     * Récupère le World Rank de l'année passée de l'équipe.
+     * 
+     * @param nomEquipe nom de l'équipe
+     * @return le World Rank de l'année passée de l'équipe, sinon "1000".
+     */
 	public String getWorldRank(String nomEquipe) {
 
 		List<EquipeSaison> equipes;
 		try {
-			equipes = EquipesSaison.getInstance(Calendar.getInstance().get(Calendar.YEAR) - 1)
-					.getEquipes();
+			equipes = EquipesSaison.getInstance(Calendar.getInstance().get(Calendar.YEAR) - 1).getEquipes();
 			for (EquipeSaison e : equipes) {
 				if (e.getNom().equals(nomEquipe)) {
 					return String.valueOf(e.getWr());
@@ -194,7 +223,7 @@ public class ModeleCreationEquipe {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		return "1000";
 	}
 

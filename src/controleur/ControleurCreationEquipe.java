@@ -63,12 +63,15 @@ public class ControleurCreationEquipe implements ActionListener, KeyListener, It
 				try {
 					// Vérification de la validité de tous les champs
 					if (this.checkUp(joueurs, equipe)) {
-						// ajout de l'équipe
 						addEquipe(equipe, joueurs);
+						this.vue.resetChamps();
+						this.vue.remplirComboBox();
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
+				this.vue.resetChamps();
+
 			}
 			// interaction sur les champs de saisie
 		} else {
@@ -82,21 +85,20 @@ public class ControleurCreationEquipe implements ActionListener, KeyListener, It
 	}
 
 	private void addEquipe(EquipeSaison equipe, List<Joueur> joueurs) {
-		int ajout = this.modele.addEquipe(equipe);
-		switch (ajout) {
-		case 0:
-			this.ajoutJoueurs(joueurs);
-			break;
-		case 1:
-			this.vue.afficherMessageErreur("Erreur dans l'ajout de l'equipe dans la base de données\n");
-			break;
-		case 2:
-			this.vue.afficherMessageErreur("Equipe déjà presente dans la saison\n");
-			break;
-		case 3:
-			this.vue.afficherMessageErreur("Erreur dans l'ajout de l'équipe à la saison\n");
-			break;
-		}
+			switch (this.modele.addEquipe(equipe)) {
+			case 0:
+				this.ajoutJoueurs(joueurs);
+				break;
+			case 1:
+				this.vue.afficherMessageErreur("Erreur dans l'ajout de l'equipe dans la base de données\n");
+				break;
+			case 2:
+				this.vue.afficherMessageErreur("Equipe déjà presente dans la saison\n");
+				break;
+			case 3:
+				this.vue.afficherMessageErreur("Erreur dans l'ajout de l'équipe à la saison\n");
+				break;
+			}
 	}
 
 	/**
@@ -105,21 +107,17 @@ public class ControleurCreationEquipe implements ActionListener, KeyListener, It
 	 * @param une liste de joueurs
 	 */
 	private void ajoutJoueurs(List<Joueur> joueurs) {
-		String message = this.modele.addJoueurs(joueurs);
-		// vérifie si les joueurs ont bien été enregistrer à la base de données
-		if (message.equals("enregistrer")) {
-			try {
-				// retour à la page de suppression des équipes
-				this.vue.changePage(new VueSuppressionEquipe());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			// Récupération de l'équipe qui empêche l'enregistrement des équipes
-			this.vue.afficherMessageErreur("Joueur " + message + " déjà présent dans une autre équipe de la saison\n");
+		try {
+			if(!this.modele.addJoueurs(joueurs)) {
+				this.vue.afficherMessageErreur("Erreur dans l'ajout d'un joueur contacter l'equipe technique\n");
+			} 
+			this.vue.changePage(new VueSuppressionEquipe());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 	}
+	
+
 
 	/**
 	 * vérification que les informations saisies peuvent être enregistrées dans la
@@ -127,7 +125,7 @@ public class ControleurCreationEquipe implements ActionListener, KeyListener, It
 	 * 
 	 * @param liste  des joueurs
 	 * @param equipe
-	 * @return
+	 * @return si les données sont correctes
 	 */
 	private boolean checkUp(List<Joueur> joueurs, EquipeSaison equipe) {
 		switch (this.modele.testJoueurSaisie(joueurs)) {
@@ -140,6 +138,12 @@ public class ControleurCreationEquipe implements ActionListener, KeyListener, It
 		default:
 			if (equipe.getNom().length() > 50) {
 				this.vue.afficherMessageErreur("Nom de l'équipe trop long 50 caractères max\n");
+				return false;
+			}
+			String message = this.modele.joueurValide(joueurs);
+			System.out.println(message);
+			if(!message.equals("true")) {
+				this.vue.afficherMessageErreur("Joueur " + message + " déjà présent dans une autre équipe de la saison\n");
 				return false;
 			}
 			return true;

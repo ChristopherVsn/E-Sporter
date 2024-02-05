@@ -68,7 +68,7 @@ public class ControleurGestionArbitres implements ButtonTableActionListener, Key
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// updateState();
+//		 updateState();
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class ControleurGestionArbitres implements ButtonTableActionListener, Key
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// updateState();
+//		 updateState();
 	}
 
 	/**
@@ -133,6 +133,7 @@ public class ControleurGestionArbitres implements ButtonTableActionListener, Key
 			}
 		}
 	}
+
 
 	/**
 	 * @param e qui va manipuler le bouton, et si le bouton est un bouton retour, va

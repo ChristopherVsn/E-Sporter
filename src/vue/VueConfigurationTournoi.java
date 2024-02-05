@@ -267,8 +267,8 @@ public class VueConfigurationTournoi extends VueMain {
 		}
 	}
 
-	public void activeLancement() {
-		this.btnLancer.setEnabled(true);
+	public void activeLancement(boolean b) {
+		this.btnLancer.setEnabled(b);
 	}
 
 	public boolean isArbitreSelect() {

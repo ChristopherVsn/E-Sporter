@@ -49,7 +49,7 @@ public class VueCreationEquipe extends VueMain {
 	private GoldUnderlinedButton btnEnregistrer;
 	private ControleurCreationEquipe controleur;
 	private DefaultComboBoxModel modeleEquipe;
-	private RoundedComboBox comboBoxPays = new RoundedComboBox();
+	private RoundedComboBox comboBoxPays = new RoundedComboBox(); 
 	private ModeleCreationEquipe modele = new ModeleCreationEquipe();
 
 	public VueCreationEquipe() {

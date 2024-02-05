@@ -13,7 +13,7 @@ import vue.VueMatchsPouleArbitre;
 
 /**
  *
- * @author RAVEN
+ * @author Vivien
  */
 
 public class CoupleStarCellEditor extends DefaultCellEditor {
@@ -27,6 +27,15 @@ public class CoupleStarCellEditor extends DefaultCellEditor {
 	private int columnEquipe2;
 	private VueMatchsPouleArbitre vue;
 
+	/**
+	 * Crée un <code>CoupleStarCellRender</code> permettant de définir le rendu des
+	 * colonnes d'une table lorsque l'on cherche à éditer le contenu d'une colonne pour une table de séléction de données avec des étoiles.
+	 * 
+	 * @param couples       le couple permettant de stocker les informations d'une
+	 *                      ligne
+	 * @param columnEquipe1 la première colonne faisant apparaitre une étoile pouvant être édité
+	 * @param columnEquipe2 la seconde colonne faisant apparaitre une étoile pouvant être édité
+	 */
 	public CoupleStarCellEditor(List<CoupleStar> couples, int columnEquipe1, int columnEquipe2, VueMatchsPouleArbitre vue) {
 		super(new JCheckBox());
 		this.couples = couples;

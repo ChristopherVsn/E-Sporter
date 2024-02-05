@@ -19,6 +19,8 @@ import DAO.ImpPalmares;
 import DAO.ImpTournoiDAO;
 import modele.Equipe;
 import modele.EquipeSaison;
+import modele.EquipeTournoi;
+import modele.EquipesSaison;
 import modele.Match;
 import modele.ModeleCreationTournoi;
 import modele.Poule;
@@ -55,11 +57,10 @@ public class testMatchs {
 		this.genererTournoi();
 		this.genererMatchsPoule();
 		this.genererFinale();
-		
-		assertEquals("match n°7 => A (0) - D (0)", this.finale.toString());
-		this.impMatch.setScoreEquipe(7, "D", 1, "LEC"); this.impMatch.setScoreEquipe(7, "A", 3, "LEC");
+		assertEquals("match n°6 => A (0) - D (0)", this.finale.toString());
+		this.impMatch.setScoreEquipe(6, "D", 1, "LEC"); this.impMatch.setScoreEquipe(6, "A", 3, "LEC");
 		this.finale = poule.getFinal();
-		assertEquals("match n°7 => A (3) - D (1)", this.finale.toString());
+		assertEquals("match n°6 => A (3) - D (1)", this.finale.toString());
 	}
 	
 	@Test
@@ -67,13 +68,21 @@ public class testMatchs {
 		this.genererTournoi();
 		this.genererMatchsPoule();
 		this.genererFinale();
-		this.impMatch.setScoreEquipe(7, "D", 1, "LEC"); this.impMatch.setScoreEquipe(7, "A", 3, "LEC");
-
-		List<EquipeSaison> allE = this.impPalm.getByAnnee(2024);
+		this.impMatch.setScoreEquipe(6, "D", 1, "LEC"); this.impMatch.setScoreEquipe(6, "A", 3, "LEC");
+		
+		
+		List<EquipeSaison> eki = EquipesSaison.getInstance(2024).getEquipes();
+		
 		String scores = "";
 		for(Equipe e : this.equipes) {
-			scores += ("equipe " + e.getNom() + " : " + this.getScore(e, allE) + "\r\n");
+			scores += ("equipe " + e.getNom() + " : " + this.getScore(e, eki) + "\r\n");
 		}
+		
+//		for(EquipeTournoi e2 : this.impTournois.getEquipesTournoi(tournoi)) {
+//			System.out.println(e2.toString());
+//			System.out.println(e2.getEquipe() + e2.getRank());
+//		}
+		
 		assertEquals(scores, "equipe A : 435\r\n"
 				+ "equipe B : 157\r\n"
 				+ "equipe C : 90\r\n"
@@ -99,17 +108,17 @@ public class testMatchs {
 	}
 
 	private void genererMatchsPoule() {
-		this.impMatch.setScoreEquipe(1, "A", 3, "LEC"); this.impMatch.setScoreEquipe(1, "B", 1, "LEC");
-		this.impMatch.setScoreEquipe(2, "A", 3, "LEC"); this.impMatch.setScoreEquipe(2, "C", 1, "LEC");
-		this.impMatch.setScoreEquipe(3, "A", 1, "LEC"); this.impMatch.setScoreEquipe(3, "D", 3, "LEC");
-		this.impMatch.setScoreEquipe(4, "C", 1, "LEC"); this.impMatch.setScoreEquipe(4, "B", 3, "LEC");
-		this.impMatch.setScoreEquipe(5, "B", 1, "LEC"); this.impMatch.setScoreEquipe(5, "D", 3, "LEC");
-		this.impMatch.setScoreEquipe(6, "C", 1, "LEC"); this.impMatch.setScoreEquipe(6, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(0, "A", 3, "LEC"); this.impMatch.setScoreEquipe(0, "B", 1, "LEC");
+		this.impMatch.setScoreEquipe(1, "A", 3, "LEC"); this.impMatch.setScoreEquipe(1, "C", 1, "LEC");
+		this.impMatch.setScoreEquipe(2, "A", 1, "LEC"); this.impMatch.setScoreEquipe(2, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(3, "C", 1, "LEC"); this.impMatch.setScoreEquipe(3, "B", 3, "LEC");
+		this.impMatch.setScoreEquipe(4, "B", 1, "LEC"); this.impMatch.setScoreEquipe(4, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(5, "C", 1, "LEC"); this.impMatch.setScoreEquipe(5, "D", 3, "LEC");
 	}
 	
 	private void genererFinale() {
 		this.poule = new Poule(this.tournoi);
-		this.finale = poule.getFinal();
+		this.finale = this.poule.getFinal();
 	}
 	
 	private int getScore(Equipe e1, List<EquipeSaison> allE) {
@@ -132,7 +141,7 @@ public class testMatchs {
 	}
 
 	private void generateMatch(String nomTournoi, int idTournoi, List<Equipe> equipes) {
-		int n = 1;
+		int n = 0;
 		for (int i = 0; i < equipes.size(); i++) {
 			for (int j = i + 1; j < equipes.size(); j++) {
 				HashMap<String, Integer> map = new HashMap<>();

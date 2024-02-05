@@ -54,7 +54,7 @@ public class VueSuppressionEquipe extends VueMain {
 				VueSuppressionEquipe.this.panelBody
 						.setBorder(new EmptyBorder(50, (int) responsiveSizeWidth, 30, (int) responsiveSizeWidth));
 				VueSuppressionEquipe.this.panelFooter.setBorder(new EmptyBorder((int) responsiveSizeHeight, 0, 0, 0));
-				// System.out.println("large : " + VueSuppressionEquipe.this.getWidth() + " | h
+				// ("large : " + VueSuppressionEquipe.this.getWidth() + " | h
 				// : "
 				// + VueSuppressionEquipe.this.getHeight());
 			}
@@ -159,7 +159,7 @@ public class VueSuppressionEquipe extends VueMain {
 		// pasage en parametres
 		table.getColumn("").setCellRenderer(new ListButtonCellRender(btns));
 		table.getColumn("").setCellEditor(new ListButtonCellEditor(btns));
-		//table.getColumn("SUPPRIMER").setHeaderRenderer(new HeaderDeleteRenderer());
+		// table.getColumn("SUPPRIMER").setHeaderRenderer(new HeaderDeleteRenderer());
 		ObjectDesigner.setTableUI(table);
 
 	}

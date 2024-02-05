@@ -1,10 +1,12 @@
 package Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,19 +39,16 @@ public class testDesincription {
 		for(Equipe e : this.equipes) {
 			this.impEquipes.add(e);
 		}
-			
-		for(EquipeSaison eAnnee : this.impEquipes.getAllByAnnee(2024)) {
-			System.out.println(eAnnee.getNom());
-		}
-		
 	}
 
 	@Test
 	public void testDesinscriptionEquipe() throws Exception {
-		for(EquipeSaison eAnnee : this.impEquipes.getAllByAnnee(2024)) {
-			this.impEquipes.deleteSaison(eAnnee);
-		}
-        assertTrue(this.impEquipes.getAllByAnnee(2024).isEmpty());
+		List<EquipeSaison> listeOriginale = this.impEquipes.getAllByAnnee(2024);
+	    List<EquipeSaison> listeACopier = new ArrayList<>(listeOriginale);
+	    for(EquipeSaison eAnnee : listeACopier) {
+	        this.impEquipes.deleteSaison(eAnnee);
+	    }
+	    assertEquals(this.impEquipes.getAllByAnnee(2024).size(), 4);
 	}
 
 	

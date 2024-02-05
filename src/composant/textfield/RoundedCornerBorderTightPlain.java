@@ -16,10 +16,19 @@ import javax.swing.border.AbstractBorder;
 
 import ressources.CharteGraphique;
 
+/**
+ * Une classe qui extend la classe <code>AbstractBorder</code> déssinant un bord solid, arrondi, léger pour son component
+ * @author Vivien
+ *
+ */
 public class RoundedCornerBorderTightPlain extends AbstractBorder{
 	
 	private Color border;
 	
+	/**
+	 * Crée un nouveau <code>RoundedCornerBorderTightPlain</code>
+	 * @param border la couleur du bord.
+	 */
 	public RoundedCornerBorderTightPlain(Color border) {
 		this.border = border;
 	}

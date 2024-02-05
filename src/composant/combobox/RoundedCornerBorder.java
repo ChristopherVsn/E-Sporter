@@ -13,6 +13,11 @@ import java.util.Objects;
 
 import javax.swing.border.AbstractBorder;
 
+/**
+ * Une classe qui extend la classe <code>AbstractBorder</code> déssinant un bord arrondi pour son component.
+ * @author Vivien
+ *
+ */
 public class RoundedCornerBorder extends AbstractBorder {
 
 	private static final long serialVersionUID = 1L;

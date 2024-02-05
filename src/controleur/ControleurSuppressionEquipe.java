@@ -60,6 +60,9 @@ public class ControleurSuppressionEquipe implements ButtonTableActionListener {
 
     }
 
+    /**
+     * setTable et setRow permettent d'initialiser l'objet Table
+     */
     @Override
     public void setTable(JTable table) {
         this.table = table;
@@ -70,6 +73,9 @@ public class ControleurSuppressionEquipe implements ButtonTableActionListener {
         this.row = row;
     }
 
+    /**
+     * @return toutes les équipes de la saison en cours
+     */
     public List<EquipeSaison> getAll() {
         return this.modele.getAll();
     }

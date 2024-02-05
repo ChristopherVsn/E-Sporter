@@ -88,7 +88,6 @@ public class ControleurIdentification implements ActionListener, CaretListener, 
 
 	@Override
 	public void focusGained(FocusEvent e) {
-		System.out.println("cacaca");
 		if (this.vue.isError()) {
 			this.vue.hideMessageError();
 		}

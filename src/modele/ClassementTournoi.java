@@ -19,6 +19,11 @@ public class ClassementTournoi {
 	private int annee;
 	private Map<String, Integer> WrEquipeOfSaison;
 
+	/**
+     * Constructeur de la classe ClassementTournoi.
+     *
+     * @param t Le tournoi pour lequel le classement est calculé.
+     */
 	public ClassementTournoi(Tournoi t) {
 		this.impMatchs = new ImpMatchsDAO();
 		this.listeMatchs = this.impMatchs.getMatchsByTournoi(t);
@@ -29,6 +34,11 @@ public class ClassementTournoi {
 				.collect(Collectors.toMap(EquipeSaison::getNom, EquipeSaison::getWr));
 	}
 
+	/**
+     * Calcule les points des équipes en fonction des matchs joués.
+     *
+     * @return Une map associant le nom de l'équipe à son score.
+     */
 	public Map<String, Integer> getPointEquipes() {
 		Map<String, Integer> pointEquipes = new HashMap<>();
 		for (Match match : this.listeMatchs) {
@@ -43,6 +53,12 @@ public class ClassementTournoi {
 		return pointEquipes;
 	}
 
+	/**
+     * Génère le classement des équipes en fonction des scores et du Wr (Winning rate).
+     *
+     * @param equipes Une map associant le nom de l'équipe à son score.
+     * @return Une liste d'objets EquipeSaison représentant le classement des équipes.
+     */
 	public List<EquipeSaison> getClassement(Map<String, Integer> equipes) {
 		List<EquipeSaison> listEquipe = new ArrayList<>();
 		for (String nom : equipes.keySet()) {

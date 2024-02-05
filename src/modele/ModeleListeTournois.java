@@ -7,16 +7,25 @@ import java.util.List;
 
 import DAO.ImpTournoiDAO;
 
+/**
+ * Modèle pour la gestion de la liste des tournois.
+ */
 public class ModeleListeTournois {
 
     private ImpTournoiDAO impTournoiDAO;
 
+    /**
+     * Constructeur par défaut.
+     * Initialise l'objet ImpTournoiDAO utilisé pour l'accès aux données.
+     */
     public ModeleListeTournois() {
         this.impTournoiDAO = new ImpTournoiDAO();
     }
 
     /**
-     * @return tous les tournois de la saison et qui ne sont pas encore terminés
+     * Récupère la liste de tous les tournois de la saison qui ne sont pas encore terminés.
+     *
+     * @return La liste des tournois en cours.
      */
     public List<Tournoi> getAll() {
         LocalDate currentDate = LocalDate.now();
@@ -34,10 +43,11 @@ public class ModeleListeTournois {
     }
 
     /**
-     * Compare les dates @param date1 et @param date2
-     * 
-     * @return -1 si date1 est avant date2, 1 si date1 est après date2, 0 si date1
-     *         est égale à date2
+     * Compare les dates fournies.
+     *
+     * @param date1 Première date à comparer.
+     * @param date2 Deuxième date à comparer.
+     * @return -1 si date1 est avant date2, 1 si date1 est après date2, 0 si date1 est égale à date2.
      */
     private int compareDates(String date1, String date2) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -54,14 +64,19 @@ public class ModeleListeTournois {
     }
 
     /**
-     * supprime des tournois de la saison le tournoi @param t donné
+     * Supprime un tournoi de la saison.
+     *
+     * @param t Le tournoi à supprimer.
      */
     public void deleteTournoi(Tournoi t) {
         this.impTournoiDAO.delete(t);
     }
 
     /**
-     * @return un tournoi de nom @param nameTournoi
+     * Récupère un tournoi par son nom.
+     *
+     * @param nameTournoi Le nom du tournoi à récupérer.
+     * @return Le tournoi correspondant au nom spécifié.
      */
     public Tournoi getByName(String nameTournoi) {
         return this.impTournoiDAO.getByName(nameTournoi);

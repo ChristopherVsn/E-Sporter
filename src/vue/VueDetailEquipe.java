@@ -115,8 +115,7 @@ public class VueDetailEquipe extends VueMain {
 				Graphics2D g2D;
 				g2D = (Graphics2D) grphcs;
 				g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				System.out.println((int)(getWidth() * (12/11)));
-				System.out.println(getWidth());
+
 				Image cup;
 				String wr = VueDetailEquipe.this.controleur.getWr(equipe);
 				switch(wr) {
@@ -229,7 +228,6 @@ public class VueDetailEquipe extends VueMain {
         this.tblHistorique.setModel(this.modeleTable);
         tblHistorique.getColumn("Ligue").setPreferredWidth(200);
         tblHistorique.getColumn("Tournoi").setPreferredWidth(100);
-        System.out.println(this.tblHistorique.getColumn("Rank").getPreferredWidth());
         
     }
 

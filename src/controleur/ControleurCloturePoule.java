@@ -31,15 +31,10 @@ public class ControleurCloturePoule implements ActionListener {
 				this.vue.setFinal(matchFinal);
 				break;
 			case "finFinal":
-				try {
-					PopupClotureTournoi popup = new PopupClotureTournoi(this.vue.getTournoi().getNom(),this.vue);
+					PopupClotureTournoi popup = new PopupClotureTournoi(this.vue.getTournoi().getNom());
 	                popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
 	                popup.setVisible(true);
-
-	            } catch (Exception exept) {
-	                exept.printStackTrace();
-	            }
+	                this.vue.changePage(Pages.IDENTIFICATION);
 				break;
 		}
 	}

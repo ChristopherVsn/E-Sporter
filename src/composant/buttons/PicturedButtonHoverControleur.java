@@ -7,6 +7,10 @@ public class PicturedButtonHoverControleur implements MouseListener{
 	
 	private PicturedButtonHover btn;
 
+	/**
+	 * Crée un controleur pour <code>PicturedButtonHover</code> permettant la détection du survol de la souris
+	 * @param picturedButtonHover le <code>PicturedButtonHover</code> cible
+	 */
 	public PicturedButtonHoverControleur(PicturedButtonHover picturedButtonHover) {
 		this.btn = picturedButtonHover;
 	}

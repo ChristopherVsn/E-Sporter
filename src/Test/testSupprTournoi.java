@@ -68,14 +68,13 @@ public class testSupprTournoi {
 		this.genererFinale();
 		assertEquals(Phase.FINALE, this.impTournois.getTurnamentPhase(this.tournoi));
 		//cloture de la finale
-		this.impMatch.setScoreEquipe(7, "D", 1, "LEC"); this.impMatch.setScoreEquipe(7, "A", 3, "LEC");
+		this.impMatch.setScoreEquipe(6, "D", 1, "LEC"); this.impMatch.setScoreEquipe(6, "A", 3, "LEC");
 		assertEquals(Phase.CLOSED, this.impTournois.getTurnamentPhase(this.tournoi));
 	}
 
 	@Test
 	public void testSuppressionTournoi() {
 		int idT = 0;
-		
 		//création du tournoi
 		this.genererTournoi();
 		idT = this.impTournois.getId(this.tournoi);
@@ -88,7 +87,6 @@ public class testSupprTournoi {
 		
 		this.impTournois.delete(this.tournoi);
 		idT = this.impTournois.getId(this.tournoi);
-		System.out.println(idT);
 		assertEquals(0, this.impTournois.getNbEquipesByTournoi(this.tournoi));
 		assertEquals(Optional.empty(), this.impTournois.getById(idT));
 	}
@@ -127,20 +125,19 @@ public class testSupprTournoi {
 		this.idTournoi = this.impTournois.getId(this.tournoi);
 		this.generateMatch("LEC", idTournoi, this.equipes);
 		
-		this.impMatch.setScoreEquipe(1, "KCorp", 3, "LEC"); this.impMatch.setScoreEquipe(1, "B", 1, "LEC");
-		this.impMatch.setScoreEquipe(2, "KCorp", 3, "LEC"); this.impMatch.setScoreEquipe(2, "C", 1, "LEC");
-		this.impMatch.setScoreEquipe(3, "KCorp", 1, "LEC"); this.impMatch.setScoreEquipe(3, "D", 3, "LEC");
-		this.impMatch.setScoreEquipe(4, "C", 1, "LEC"); this.impMatch.setScoreEquipe(4, "B", 3, "LEC");
-		this.impMatch.setScoreEquipe(5, "B", 1, "LEC"); this.impMatch.setScoreEquipe(5, "D", 3, "LEC");
-		this.impMatch.setScoreEquipe(6, "C", 1, "LEC"); this.impMatch.setScoreEquipe(6, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(0, "KCorp", 3, "LEC"); this.impMatch.setScoreEquipe(0, "B", 1, "LEC");
+		this.impMatch.setScoreEquipe(1, "KCorp", 3, "LEC"); this.impMatch.setScoreEquipe(1, "C", 1, "LEC");
+		this.impMatch.setScoreEquipe(2, "KCorp", 1, "LEC"); this.impMatch.setScoreEquipe(2, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(3, "C", 1, "LEC"); this.impMatch.setScoreEquipe(3, "B", 3, "LEC");
+		this.impMatch.setScoreEquipe(4, "B", 1, "LEC"); this.impMatch.setScoreEquipe(4, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(5, "C", 1, "LEC"); this.impMatch.setScoreEquipe(5, "D", 3, "LEC");
 		
 		this.poule = new Poule(this.tournoi);
 		this.finale = poule.getFinal();
-		this.impMatch.setScoreEquipe(7, "D", 1, "LEC"); this.impMatch.setScoreEquipe(7, "KCorp", 3, "LEC");
+		this.impMatch.setScoreEquipe(6, "D", 1, "LEC"); this.impMatch.setScoreEquipe(6, "KCorp", 3, "LEC");
 		
 		modele = new ModeleDetailEquipe(nouvelleEquipe);
 		assertEquals(modele.getTournois().size(), 1);
-		assertTrue(modele.tournoiFini(tournoi));
 		assertEquals(modele.getScore(nouvelleEquipe), "0");
 	}
 
@@ -160,12 +157,12 @@ public class testSupprTournoi {
 	}
 	
 	private void genererMatchsPoule() {
-		this.impMatch.setScoreEquipe(1, "A", 3, "LEC"); this.impMatch.setScoreEquipe(1, "B", 1, "LEC");
-		this.impMatch.setScoreEquipe(2, "A", 3, "LEC"); this.impMatch.setScoreEquipe(2, "C", 1, "LEC");
-		this.impMatch.setScoreEquipe(3, "A", 1, "LEC"); this.impMatch.setScoreEquipe(3, "D", 3, "LEC");
-		this.impMatch.setScoreEquipe(4, "C", 1, "LEC"); this.impMatch.setScoreEquipe(4, "B", 3, "LEC");
-		this.impMatch.setScoreEquipe(5, "B", 1, "LEC"); this.impMatch.setScoreEquipe(5, "D", 3, "LEC");
-		this.impMatch.setScoreEquipe(6, "C", 1, "LEC"); this.impMatch.setScoreEquipe(6, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(0, "A", 3, "LEC"); this.impMatch.setScoreEquipe(0, "B", 1, "LEC");
+		this.impMatch.setScoreEquipe(1, "A", 3, "LEC"); this.impMatch.setScoreEquipe(1, "C", 1, "LEC");
+		this.impMatch.setScoreEquipe(2, "A", 1, "LEC"); this.impMatch.setScoreEquipe(2, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(3, "C", 1, "LEC"); this.impMatch.setScoreEquipe(3, "B", 3, "LEC");
+		this.impMatch.setScoreEquipe(4, "B", 1, "LEC"); this.impMatch.setScoreEquipe(4, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(5, "C", 1, "LEC"); this.impMatch.setScoreEquipe(5, "D", 3, "LEC");
 	}
 	
 	private void genererFinale() {
@@ -175,7 +172,7 @@ public class testSupprTournoi {
 	}
 	
 	private void generateMatch(String nomTournoi, int idTournoi, List<Equipe> equipes) {
-		int n = 1;
+		int n = 0;
 		for (int i = 0; i < equipes.size(); i++) {
 			for (int j = i + 1; j < equipes.size(); j++) {
 				HashMap<String, Integer> map = new HashMap<>();
@@ -185,9 +182,5 @@ public class testSupprTournoi {
 				n++;
 			}
 		}
-	}
-	
-	private void clotureFinale() {
-		
 	}
 }

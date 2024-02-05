@@ -34,7 +34,12 @@ public class ModeleArbitre {
 	public boolean ajouterArbitreBD(Arbitre arbitre) {
 		return this.arbitreDAO.add(arbitre);
 	}
-	
+	/**
+	 * Supprime un arbitre de la base de données.
+	 *
+	 * @param arbitre L'arbitre à supprimer.
+	 * @return true si l'arbitre a été supprimé avec succès, sinon false.
+	 */
 	public boolean deleteArbitreBD(Arbitre arbitre) {
 		try {
 			return this.arbitreDAO.delete(arbitre);
@@ -43,7 +48,11 @@ public class ModeleArbitre {
 		}
 		return false;
 	}
-	
+	/**
+	 * Obtient la liste de tous les arbitres enregistrés dans la base de données.
+	 *
+	 * @return La liste de tous les arbitres.
+	 */
 	public List<Arbitre> getAllArbitres() {
 		return this.arbitreDAO.getAll();
 	} 

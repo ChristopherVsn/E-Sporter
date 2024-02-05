@@ -339,7 +339,6 @@ public class VueIdentification extends JPanel {
 		int widthScreen = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		Frame f = this.getFrame();
 		if(f != null) {
-			System.out.println("frame not null");
 			int heightFrame = f.getHeight();
 			int widthFrame = f.getWidth();
 			return ((heightFrame == heightScreen) && (widthFrame == widthScreen));

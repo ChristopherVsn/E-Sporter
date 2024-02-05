@@ -1,5 +1,8 @@
 package modele;
 
+/**
+ * Représente une équipe dans le contexte d'une saison spécifique.
+ */
 public class EquipeSaison extends Equipe {
 	
 	private int saison;
@@ -7,13 +10,14 @@ public class EquipeSaison extends Equipe {
 	private int score;
 	
 	/**
-	 * Equipe saison
-	 * @param nom
-	 * @param pays
-	 * @param saison
-	 * @param score
-	 * @param world rank
-	 */
+     * Constructeur de la classe EquipeSaison avec World Rank spécifié.
+     * 
+     * @param nom    nom de l'équipe
+     * @param pays   pays de l'équipe
+     * @param saison année de la saison
+     * @param score  score de l'équipe
+     * @param wr     World Rank de l'équipe
+     */
 	public EquipeSaison(String nom, String pays, int saison, int score, int wr) {
 		super(nom, pays);
 		this.saison = saison;
@@ -22,12 +26,13 @@ public class EquipeSaison extends Equipe {
 	}
 	
 	/**
-	 * Equipe saison
-	 * @param nom
-	 * @param pays
-	 * @param saison
-	 * @param score
-	 */
+     * Constructeur de la classe EquipeSaison avec World Rank non spécifié (initialisé à -1).
+     * 
+     * @param nom    nom de l'équipe
+     * @param pays   pays de l'équipe
+     * @param saison année de la saison
+     * @param score  score de l'équipe
+     */
 	public EquipeSaison(String nom, String pays, int saison, int score) {
 		super(nom, pays);
 		this.saison = saison;
@@ -36,50 +41,64 @@ public class EquipeSaison extends Equipe {
 	}
 	
 	/**
-	 * @return l'année de la saison
-	 */
+     * Obtient l'année de la saison.
+     * 
+     * @return année de la saison
+     */
 	public int getSaison() {
 		return saison;
 	}
 	
 	/**
-	 * @return le score de l'équipe
-	 */
+     * Obtient le score de l'équipe.
+     * 
+     * @return score de l'équipe
+     */
 	public int getScore() {
 		return score;
 	}
 	
 	/**
-	 * @return le world rank, si le world rank n'est pas initialisé -1
-	 */
+     * Obtient le World Rank de l'équipe. Si le World Rank n'est pas initialisé, retourne -1.
+     * 
+     * @return World Rank de l'équipe, sinon -1
+     */
 	public int getWr() {
 		return wr;
 	}
 	
 	/**
-	 * Permets de modifier l'année de la saison
-	 * @param saison
-	 */
+     * Modifie l'année de la saison.
+     * 
+     * @param saison année de la saison
+     */
 	public void setSaison(int saison) {
 		this.saison = saison;
 	}
 	
 	/**
-	 * Permets de modifier le socre de l'équipe
-	 * @param score
-	 */
+     * Modifie le score de l'équipe.
+     * 
+     * @param score score de l'équipe
+     */
 	public void setScore(int score) {
 		this.score=  score;
 	}
 	
 	/**
-	 * Permets de modifier le world rank de l'équipe
-	 * @param world rank
-	 */
+     * Modifie le World Rank de l'équipe.
+     * 
+     * @param wr World Rank de l'équipe
+     */
 	public void setWr(int wr) {
 		this.wr =wr;
 	}
 	
+	/**
+     * Redéfinition de la méthode toString.
+     * 
+     * @return une représentation textuelle de l'équipe avec son nom, son score et son World Rank.
+     */
 	@Override
 	public String toString() {
 		return "equipe :" + this.getNom() + " score : " + this.getScore() + " wr : " + this.getWr();

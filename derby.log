@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Thu Jan 18 12:45:54 CET 2024:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-018d-1c64-566e-00000cd8e0e0 
-on database directory C:\Users\loulo\OneDrive\Bureau\BUT Info\Semestre 3\SAE\e-sportsae_groupe_b6\code\E-Sporter\BDD  with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@22d8cfe0 
-Loaded from file:/C:/Users/loulo/OneDrive/Bureau/BUT%20Info/Semestre%203/SAE/e-sportsae_groupe_b6/code/E-Sporter/derby.jar
+Mon Jan 22 19:21:57 CET 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-018d-3268-5ee9-00000f18a520 
+on database directory C:\Users\clema\Documents\cours\Cour2emeAnnee\SAES3\test\e-sportsae_groupe_b6\code\E-Sporter\BDD  with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@22d8cfe0 
+Loaded from file:/C:/Users/clema/Documents/cours/Cour2emeAnnee/SAES3/test/e-sportsae_groupe_b6/code/E-Sporter/derby.jar
 java.vendor=Eclipse Adoptium
 java.runtime.version=17.0.5+8
-user.dir=C:\Users\loulo\OneDrive\Bureau\BUT Info\Semestre 3\SAE\e-sportsae_groupe_b6\code\E-Sporter
+user.dir=C:\Users\clema\Documents\cours\Cour2emeAnnee\SAES3\test\e-sportsae_groupe_b6\code\E-Sporter
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

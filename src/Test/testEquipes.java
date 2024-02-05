@@ -33,36 +33,35 @@ public class testEquipes extends TestCase {
 
 	@Test
 	public void testCreationNouvelleEquipe() {
-		String nomEquipeTest = "Vitality";
+		String nomEquipeTest = "EquipeBizarreQuiExistyePas";
 		boolean equipeExiste = this.impEquipeDAO.rechercheEquipe(nomEquipeTest);
 		assertFalse(equipeExiste);
-		
+
 		Equipe nouvelleEquipe = new Equipe(nomEquipeTest, "France");
 		this.impEquipeDAO.add(nouvelleEquipe);
 		assertTrue(this.impEquipeDAO.rechercheEquipe(nomEquipeTest));
 	}
 
 	@Test
-	public void testSuppressionEquipe(){
+	public void testSuppressionEquipe() {
 		Equipe ancienneEquipe = new Equipe("Bibou", "France");
 		this.impEquipeDAO.add(ancienneEquipe);
-		
+
 		assertTrue(this.participeSaison(ancienneEquipe));
 		EquipeSaison bibou = this.impEquipeDAO.getByName(ancienneEquipe.getNom());
 		this.impEquipeDAO.deleteSaison(bibou);
 		assertFalse(this.participeSaison(ancienneEquipe));
 	}
-	
-//		this.equipes = EquipesSaison.getInstance(2024).getEquipes();
-//		for(EquipeSaison e : this.equipes) {
-//			System.out.println(e.toString() + " score : " + e.getScore());
-//		}
 
+	// this.equipes = EquipesSaison.getInstance(2024).getEquipes();
+	// for(EquipeSaison e : this.equipes) {
+	// (e.toString() + " score : " + e.getScore());
+	// }
 
 	private boolean participeSaison(Equipe ancienneEquipe) {
 		List<EquipeSaison> allE = this.impEquipeDAO.getAllByAnnee(2024);
-		for(EquipeSaison e : allE) {
-			if(e.getNom().equals(ancienneEquipe.getNom())) {
+		for (EquipeSaison e : allE) {
+			if (e.getNom().equals(ancienneEquipe.getNom())) {
 				return true;
 			}
 		}
@@ -78,8 +77,8 @@ public class testEquipes extends TestCase {
 	}
 
 	private int getScore(Equipe e1, List<EquipeSaison> allE) {
-		for(EquipeSaison e : allE) {
-			if(e.getNom().equals(e1.getNom())){
+		for (EquipeSaison e : allE) {
+			if (e.getNom().equals(e1.getNom())) {
 				return e.getScore();
 			}
 		}

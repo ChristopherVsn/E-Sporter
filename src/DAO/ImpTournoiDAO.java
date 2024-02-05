@@ -20,18 +20,34 @@ import modele.Match;
 import modele.Phase;
 import modele.Tournoi;
 
+/**
+ * Classe d'implémentation de l'interface TournoiDAO.
+ * Gère l'accès aux données des tournois dans la base de données.
+ */
 public class ImpTournoiDAO implements TournoiDAO {
 	private Connection c;
 
+	/**
+     * Constructeur par défaut, utilise la connexion à la base de données par défaut.
+     */
 	public ImpTournoiDAO() {
 		this.c = ConnexionDB.getConnexionDB().getConnexion();
 	}
 
-	// pour les tests
-	public ImpTournoiDAO(Connection coco) {
-		this.c = coco;
+	/**
+     * Constructeur utilisé pour les tests, prend une connexion en paramètre.
+     *
+     * @param test Connexion à la base de données.
+     */
+	public ImpTournoiDAO(Connection test) {
+		this.c = test;
 	}
 
+	/**
+     * Récupère tous les tournois de la base de données.
+     *
+     * @return Liste des tournois.
+     */
 	@Override
 	public List<Tournoi> getAll() {
 		List<Tournoi> tournois = new ArrayList<>();
@@ -48,6 +64,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		return tournois;
 	}
 
+	/**
+     * Récupère un tournoi par son identifiant.
+     *
+     * @param id Identifiant du tournoi.
+     * @return Tournoi correspondant à l'identifiant, s'il existe.
+     */
 	@Override
 	public Optional<Tournoi> getById(Integer... id) {
 		try (Statement statement = this.c.createStatement()) {
@@ -66,6 +88,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		return Optional.empty();
 	}
 
+	/**
+     * Ajoute un tournoi à la base de données.
+     *
+     * @param value Tournoi à ajouter.
+     * @return true si l'ajout a réussi, false sinon.
+     */
 	@Override
 	public boolean add(Tournoi value) {
 		if (this.getByName(value.getNom()) != null) {
@@ -87,6 +115,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
+	/**
+     * Met à jour les informations d'un tournoi dans la base de données.
+     *
+     * @param value Tournoi à mettre à jour.
+     * @return true si la mise à jour a réussi, false sinon.
+     */
 	@Override
 	public boolean update(Tournoi value) {
 		try (Statement statement = this.c.createStatement()) {
@@ -102,6 +136,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
+	/**
+     * Supprime un tournoi de la base de données.
+     *
+     * @param value Tournoi à supprimer.
+     * @return true si la suppression a réussi, false sinon.
+     */
 	@Override
 	public boolean delete(Tournoi value) {
 		int idTournoi = this.getId(value);
@@ -119,6 +159,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
+	/**
+     * Obtient l'identifiant d'un tournoi à partir de son objet Tournoi.
+     *
+     * @param value Tournoi dont on veut l'identifiant.
+     * @return Identifiant du tournoi.
+     */
 	public int getId(Tournoi value) {
 		try (Statement statement = this.c.createStatement()) {
 			String query = String.format("SELECT IdTournoi FROM Tournoi WHERE Nom='%s'", value.getNom());
@@ -133,6 +179,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
+	/**
+     * Obtient un tournoi à partir de son nom.
+     *
+     * @param nom Nom du tournoi.
+     * @return Tournoi correspondant au nom, s'il existe.
+     */
 	public Tournoi getByName(String nom) {
 		try (Statement statement = this.c.createStatement()) {
 			String query = String.format("SELECT * FROM Tournoi WHERE Nom='%s'", nom);
@@ -151,8 +203,11 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
-	/*
-	 * Prennds en paramètre un tournoi et renvoie le nombre de matchs au tournoi
+	/**
+	 * Obtient le nombre de matchs associés à un tournoi.
+	 *
+	 * @param t Tournoi pour lequel on veut compter les matchs.
+	 * @return Le nombre de matchs du tournoi.
 	 */
 	public int getNbMatchsByTournoi(Tournoi t) {
 		try (Statement statement = this.c.createStatement()) {
@@ -169,8 +224,11 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
-	/*
-	 * Prends en paramètre un tournoi est renvoie true si la finale est terminée
+	/**
+	 * Obtient la phase actuelle d'un tournoi en fonction du nombre de matchs joués.
+	 *
+	 * @param tournoi Tournoi pour lequel on veut déterminer la phase.
+	 * @return La phase actuelle du tournoi (NOT_STARTED, POULE, FINALE, CLOSED).
 	 */
 	public Phase getTurnamentPhase(Tournoi tournoi) {
 		int nbEquipes = this.getNbEquipesByTournoi(tournoi);
@@ -188,9 +246,11 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
-	/*
-	 * Prends en paramètre un tournoi est renvoie le nombre d'équipe jouant au
-	 * tournoi
+	/**
+	 * Obtient le nombre d'équipes participant à un tournoi.
+	 *
+	 * @param tournoi Tournoi pour lequel on veut connaître le nombre d'équipes.
+	 * @return Le nombre d'équipes participant au tournoi.
 	 */
 	public int getNbEquipesByTournoi(Tournoi tournoi) {
 		try (Statement statement = this.c.createStatement()) {
@@ -207,9 +267,11 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
-	/*
-	 * Prends en paramètre un tournoi est renvoie le nombre de matchs joués au
-	 * tournoi
+	/**
+	 * Obtient le nombre de matchs joués dans un tournoi.
+	 *
+	 * @param tournoi Tournoi pour lequel on veut connaître le nombre de matchs joués.
+	 * @return Le nombre de matchs joués au tournoi.
 	 */
 	public int getNbMatchsOverByTournoi(Tournoi tournoi) {
 		try (Statement statement = this.c.createStatement()) {
@@ -226,9 +288,16 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
+	/**
+	 * Génère des matchs pour un tournoi à partir de la liste des équipes.
+	 *
+	 * @param nomTournoi Nom du tournoi.
+	 * @param idTournoi  Identifiant du tournoi.
+	 * @param equipes    Liste des équipes participantes.
+	 */
 	public void generateMatch(String nomTournoi, int idTournoi, List<EquipeSaison> equipes) {
 		ImpMatchsDAO impMatch = new ImpMatchsDAO();
-		int n = 1;
+		int n = 0;
 		for (int i = 0; i < equipes.size(); i++) {
 			for (int j = i + 1; j < equipes.size(); j++) {
 				HashMap<String, Integer> map = new HashMap<>();
@@ -240,6 +309,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
+	/**
+	 * Obtient la liste des arbitres associés à un tournoi.
+	 *
+	 * @param t Tournoi pour lequel on veut récupérer les arbitres.
+	 * @return Liste des arbitres du tournoi.
+	 */
 	public List<Arbitre> getArbitresByTournoi(Tournoi t) {
 		List<Arbitre> arbitres = new LinkedList<>();
 		try (Statement statement = this.c.createStatement()) {
@@ -258,6 +333,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
+	/**
+	 * Obtient la liste des équipes participantes à un tournoi avec des statistiques.
+	 *
+	 * @param t Tournoi pour lequel on veut récupérer les équipes et leurs statistiques.
+	 * @return Liste des équipes du tournoi avec leurs statistiques.
+	 */
 	public List<EquipeTournoi> getEquipesTournoi(Tournoi t) {
 		List<EquipeTournoi> equipes = new LinkedList<>();
 		try (Statement statement = this.c.createStatement()) {
@@ -272,11 +353,20 @@ public class ImpTournoiDAO implements TournoiDAO {
 			int classement = 0;
 			int count = 0;
 			int lastScore = -1;
+			String equipeGagne = this.getNomEquipeGagnanteFinale(t);
 			while (rs.next()) {
 				count++;
 				int nbVictoires = rs.getInt("nb_matchs_gagnes");
-				if (lastScore != nbVictoires) {
-					classement = count;
+				if(count<3) {
+					if(rs.getString("NomEquipe").equals(equipeGagne)) {
+						classement = 1;
+					}else {
+						classement = 2;
+					}
+				}else {
+					if (lastScore != nbVictoires) {
+						classement = count;
+					}					
 				}
 				lastScore = rs.getInt("nb_matchs_gagnes");
 				equipes.add(new EquipeTournoi(rs.getString("NomEquipe"), classement, rs.getInt("nb_matchs_joues"),
@@ -288,7 +378,53 @@ public class ImpTournoiDAO implements TournoiDAO {
 			return null;
 		}
 	}
+	
+	/**
+	 * Obtient le classement d'une équipe dans un tournoi.
+	 *
+	 * @param t      Tournoi dans lequel se trouve l'équipe.
+	 * @param equipe Équipe pour laquelle on veut obtenir le classement.
+	 * @return Le classement de l'équipe dans le tournoi.
+	 */
+	public int getRankEquipe(Tournoi t, Equipe equipe) {
+		List<EquipeTournoi> tournoi = this.getEquipesTournoi(t);
+		int rank = -1;
+		for(EquipeTournoi e : tournoi) {
+			if(e.getEquipe().equals(equipe.getNom())) {
+				rank = e.getRank();
+			}
+		}
+		return rank;
+	}
 
+	/**
+	 * Obtient le nom de l'équipe gagnante de la finale d'un tournoi.
+	 *
+	 * @param t Tournoi pour lequel on veut connaître l'équipe gagnante de la finale.
+	 * @return Le nom de l'équipe gagnante de la finale.
+	 */
+	public String getNomEquipeGagnanteFinale(Tournoi t) {
+		int idTournoi = getId(t);
+	    try (Statement statement = this.c.createStatement()) {
+	        String finaleQuery = "SELECT NomEquipe, IdMatchs, IdTournoi FROM Matchs WHERE IdMatchs = (SELECT MAX(IdMatchs) FROM Matchs WHERE IdTournoi = " + idTournoi + ") AND IdTournoi = " + idTournoi + " AND NbPoints = 3 ";
+	        ResultSet rs = statement.executeQuery(finaleQuery);
+	        if (rs.next()) {
+	            return rs.getString("NomEquipe");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+
+	
+	/**
+	 * Ajoute un arbitre à un tournoi.
+	 *
+	 * @param t Tournoi auquel on veut ajouter un arbitre.
+	 * @param a Arbitre à ajouter.
+	 * @return true si l'ajout a réussi, false sinon.
+	 */
 	public boolean addArbitre(Tournoi t, Arbitre a) {
 		try (Statement statement = this.c.createStatement()) {
 			String query = String.format(
@@ -302,6 +438,12 @@ public class ImpTournoiDAO implements TournoiDAO {
 		}
 	}
 
+	/**
+	 * Obtient la liste des tournois auxquels une équipe a participé.
+	 *
+	 * @param nomEquipe Nom de l'équipe.
+	 * @return Liste des tournois auxquels l'équipe a participé.
+	 */
 	public List<Tournoi> getTournoisFromEquipe(String nomEquipe) {
 		List<Tournoi> tournois = new ArrayList<>();
 		try (Statement statement = this.c.createStatement()) {
@@ -322,35 +464,14 @@ public class ImpTournoiDAO implements TournoiDAO {
 		return tournois;
 	}
 
-	public int getRankEquipe(Tournoi t, Equipe equipe) {
-		try (Statement statement = this.c.createStatement()) {
-			String query = String.format(
-					"SELECT Matchs.NomEquipe," + "COUNT(CASE WHEN Matchs.NbPoints <> 0 THEN 1 END) AS nb_matchs_joues, "
-							+ "COUNT(CASE WHEN Matchs.NbPoints = 3 THEN 1 END) AS nb_matchs_gagnes " + "FROM Matchs "
-							+ "WHERE Matchs.IdTournoi = " + t.getIdTournoi() + " " + "GROUP BY Matchs.NomEquipe "
-							+ "ORDER BY 3 DESC, 2 DESC ");
-			ResultSet rs = statement.executeQuery(query);
-			int classement = 0;
-			int count = 0;
-			int lastScore = 0;
-			while (rs.next()) {
-				count++;
-				int nbVictoires = rs.getInt("nb_matchs_gagnes");
-				if (lastScore != nbVictoires) {
-					classement = count;
-				}
-				lastScore = rs.getInt("nb_matchs_gagnes");
-				if (rs.getString("NomEquipe").equals(equipe.getNom())) {
-					return classement;
-				}
-			}
-			return -1;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return -1;
-		}
-	}
 
+	/**
+	 * Obtient un tournoi en utilisant le login et le mot de passe des arbitres.
+	 *
+	 * @param login    Login associé au tournoi.
+	 * @param password Mot de passe associé au tournoi.
+	 * @return Tournoi correspondant aux identifiants, s'il existe.
+	 */
 	public Tournoi getTournoiByLogin(String login, String password) {
 		Tournoi tournoi = null;
 		try (Statement statement = this.c.createStatement()) {

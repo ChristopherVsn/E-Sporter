@@ -56,7 +56,6 @@ public class ControleurConfigurationTournoi implements ButtonTableActionListener
 			else if (this.vue.isEquipeSelect()) {
 				equipeSelectionne = this.modele
 						.getEquipeByName(this.vue.getComboBoxEquipes().getSelectedItem().toString());
-				System.out.println("Controleur - equipeSelect : " + equipeSelectionne.getNom());
 				this.modele.selectEquipe(equipeSelectionne);
 				majEquipes();
 			}
@@ -70,15 +69,13 @@ public class ControleurConfigurationTournoi implements ButtonTableActionListener
 			// si on sélectionne une équipe pour supprimer
 			else if (e.getActionCommand().equals("deleteEquipe")) {
 				equipeSelectionne = this.modele.getEquipeByName(this.table.getValueAt(row, 0).toString());
-				System.out.println("Controleur - equipe selec suppression : " + equipeSelectionne.getNom());
 				this.modele.unselectEquipe(equipeSelectionne);
 				majEquipes();
 			}
-			//on dégrise le bouton de lancement
 			
-			if(this.modele.checkContraintes()) {
-				this.vue.activeLancement();;
-			}
+			//on dégrise le bouton de lancement si les contraintes sont ok
+			this.vue.activeLancement(this.modele.checkContraintes());
+			
 			// si on lance, on génère les matchs dans la BD
 			if (e.getActionCommand().equals("lancerTournoi")) {
 				this.modele.generateMatch();

@@ -17,15 +17,27 @@ import modele.Phase;
 import modele.Poule;
 import modele.Tournoi;
 
+/**
+ * Implémentation de l'accès aux données pour la gestion des palmarès.
+ */
 public class ImpPalmares {
 	private Connection c;
 	private ImpTournoiDAO impTournoiDAO;
-
+	
+	/**
+     * Constructeur de la classe ImpPalmares.
+     */
 	public ImpPalmares() {
 		this.c = ConnexionDB.getConnexionDB().getConnexion();
 		this.impTournoiDAO = new ImpTournoiDAO();
 	}
 
+	/**
+     * Obtient la liste des équipes pour une année donnée.
+     * 
+     * @param annee année spécifiée
+     * @return liste des équipes avec leur score
+     */
 	public List<EquipeSaison> getByAnnee(Integer annee) {
 		List<EquipeSaison> listeEquipes = new ArrayList<>();
 		List<String> nom = new ArrayList<>();
@@ -42,7 +54,6 @@ public class ImpPalmares {
 			// pour chaque équipe
 			while (rs.next()) {
 				idTournoi = rs.getInt("IdTournoi");
-
 				tournoi = this.impTournoiDAO.getById(idTournoi).get();
 				ligue = tournoi.getLigue().getValeur();
 				if (this.impTournoiDAO.getTurnamentPhase(tournoi) == Phase.CLOSED) {
@@ -71,6 +82,7 @@ public class ImpPalmares {
 					Double fourScore = sortedTeams.stream().skip(2).filter(equipe -> equipe.getValue() != thirdScore)
 							.max((equipe1, equipe2) -> Double.compare(equipe1.getValue(), equipe2.getValue()))
 							.map(e -> e.getValue()).orElse(-1d);
+					
 					for (int i = 0; i < sortedTeams.size(); i++) {
 						Entry<String, Double> team = sortedTeams.get(i);
 						int additionalPoints = 0;
@@ -112,6 +124,12 @@ public class ImpPalmares {
 		return listeEquipes;
 	}
 
+	/**
+     * Obtient le pays d'une équipe à partir de son nom.
+     * 
+     * @param nom nom de l'équipe
+     * @return nom du pays
+     */
 	public String getPays(String nom) {
 		ResultSet rs;
 		String s = "";
@@ -128,6 +146,12 @@ public class ImpPalmares {
 		return s;
 	}
 
+	/**
+     * Obtient la liste des équipes de l'année précédente.
+     * 
+     * @param annee année spécifiée
+     * @return liste des équipes de l'année précédente avec leur score
+     */
 	public List<EquipeSaison> getAnneePrecedente(int annee) {
 		return this.getByAnnee(annee - 1);
 	}

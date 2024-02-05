@@ -10,6 +10,11 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
+/**
+ * Une classe qui extend la classe <code>RoundedCornerBorder</code> déssinant un bord dur pour les bords du bas.
+ * @author Vivien
+ *
+ */
 public class KamabokoBorder extends RoundedCornerBorder {
 
 	  /**

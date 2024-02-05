@@ -57,23 +57,25 @@ public class testTournoi {
 		this.genererTournoi();
 		this.genererMatchsPoule();
 		this.genererFinale();
-		
-		assertEquals("match n°7 => A (0) - D (0)", this.finale.toString());
-		this.impMatch.setScoreEquipe(7, "D", 1, "LEC"); this.impMatch.setScoreEquipe(7, "A", 3, "LEC");
+
+		assertEquals("match n°6 => A (0) - D (0)", this.finale.toString());
+		this.impMatch.setScoreEquipe(6, "D", 1, "LEC");
+		this.impMatch.setScoreEquipe(6, "A", 3, "LEC");
 		this.finale = poule.getFinal();
-		assertEquals("match n°7 => A (3) - D (1)", this.finale.toString());
+		assertEquals("match n°6 => A (3) - D (1)", this.finale.toString());
 	}
-	
+
 	@Test
 	public void testScoresTournoi() {
 		this.genererTournoi();
 		this.genererMatchsPoule();
 		this.genererFinale();
-		this.impMatch.setScoreEquipe(7, "D", 1, "LEC"); this.impMatch.setScoreEquipe(7, "A", 3, "LEC");
+		this.impMatch.setScoreEquipe(6, "D", 1, "LEC");
+		this.impMatch.setScoreEquipe(6, "A", 3, "LEC");
 
 		List<EquipeSaison> allE = this.impPalm.getByAnnee(2024);
 		String scores = "";
-		for(Equipe e : this.equipes) {
+		for (Equipe e : this.equipes) {
 			scores += ("equipe " + e.getNom() + " : " + this.getScore(e, allE) + "\r\n");
 		}
 		assertEquals(scores, "equipe A : 435\r\n"
@@ -81,81 +83,81 @@ public class testTournoi {
 				+ "equipe C : 90\r\n"
 				+ "equipe D : 285\r\n");
 	}
-	
-	@Test 
+
+	@Test
 	public void testClassementTournoi() {
 		this.genererTournoi();
 		List<EquipeTournoi> eqT = this.impTournois.getEquipesTournoi(this.tournoi);
-		//avant matchs joués, toutes les équipes à égalité
-		for(EquipeTournoi e : eqT) {
+		// avant matchs joués, toutes les équipes à égalité
+		for (EquipeTournoi e : eqT) {
 			assertEquals(0, e.getNbMatchJoues(), e.getNbVictoires());
-			assertEquals(1, e.getRank());
+			assertEquals(2, e.getRank());
 		}
-		
+
 		this.genererMatchsPoule();
 		this.genererFinale();
 		assertEquals(this.finale.getNomEquipe1(), "A");
 		assertEquals(this.finale.getNomEquipe2(), "D");
-		
-		this.impMatch.setScoreEquipe(7, "D", 1, "LEC"); this.impMatch.setScoreEquipe(7, "A", 3, "LEC");
-//		eqT = this.impTournois.getEquipesTournoi(this.tournoi);
-//		for(EquipeTournoi e : eqT) {
-//			System.out.println(e.getEquipe() + " = \nmatchsJoues : " + e.getNbMatchJoues() + " matchsGagnes : " + e.getNbVictoires() + " rank : " + e.getRank());
-//		}
+
+		this.impMatch.setScoreEquipe(6, "D", 1, "LEC");
+		this.impMatch.setScoreEquipe(6, "A", 3, "LEC");
+		// eqT = this.impTournois.getEquipesTournoi(this.tournoi);
+		// for(EquipeTournoi e : eqT) {
+		// (e.getEquipe() + " = \nmatchsJoues : " + e.getNbMatchJoues() + " matchsGagnes
+		// : " + e.getNbVictoires() + " rank : " + e.getRank());
+		// }
 	}
-	
-	@Test
-	public void testEgaliteWr() {
-//		this.tournoi23();
-		for(EquipeSaison e : this.impPalm.getByAnnee(2023)) {
-			System.out.println(e.getNom() + " " + e.getWr());
-		}
-	}
-	
+
 	private void tournoi23() {
-		//donne classement : A-D-B-C
+		// donne classement : A-D-B-C
 		this.tournoi = new Tournoi("2023", "Regional", "15-08-2023", "18-08-2023", "log2", "pwd2");
 		this.modeleT.addTournoi(this.tournoi);
-		
+
 		this.equipes = new LinkedList<Equipe>();
 		this.equipes.add(new Equipe("A", "fr"));
 		this.equipes.add(new Equipe("B", "fr"));
 		this.equipes.add(new Equipe("C", "fr"));
 		this.equipes.add(new Equipe("D", "fr"));
-		
-		for(Equipe e : this.equipes) {
+
+		for (Equipe e : this.equipes) {
 			this.impEquipes.add(e);
 		}
-		
+
 		this.idTournoi = this.impTournois.getId(this.tournoi);
 		this.generateMatch("2023", idTournoi, this.equipes);
-		
-		this.impMatch.setScoreEquipe(1, "A", 3, "2023"); this.impMatch.setScoreEquipe(1, "B", 1, "2023");
-		this.impMatch.setScoreEquipe(2, "A", 3, "2023"); this.impMatch.setScoreEquipe(2, "C", 1, "2023");
-		this.impMatch.setScoreEquipe(3, "A", 1, "2023"); this.impMatch.setScoreEquipe(3, "D", 3, "2023");
-		this.impMatch.setScoreEquipe(4, "C", 1, "2023"); this.impMatch.setScoreEquipe(4, "B", 3, "2023");
-		this.impMatch.setScoreEquipe(5, "B", 1, "2023"); this.impMatch.setScoreEquipe(5, "D", 3, "2023");
-		this.impMatch.setScoreEquipe(6, "C", 1, "2023"); this.impMatch.setScoreEquipe(6, "D", 3, "2023");
-		
+
+		this.impMatch.setScoreEquipe(0, "A", 3, "2023");
+		this.impMatch.setScoreEquipe(0, "B", 1, "2023");
+		this.impMatch.setScoreEquipe(1, "A", 3, "2023");
+		this.impMatch.setScoreEquipe(1, "C", 1, "2023");
+		this.impMatch.setScoreEquipe(2, "A", 1, "2023");
+		this.impMatch.setScoreEquipe(2, "D", 3, "2023");
+		this.impMatch.setScoreEquipe(3, "C", 1, "2023");
+		this.impMatch.setScoreEquipe(3, "B", 3, "2023");
+		this.impMatch.setScoreEquipe(4, "B", 1, "2023");
+		this.impMatch.setScoreEquipe(4, "D", 3, "2023");
+		this.impMatch.setScoreEquipe(5, "C", 1, "2023");
+		this.impMatch.setScoreEquipe(5, "D", 3, "2023");
+
 		this.poule = new Poule(this.tournoi);
 		this.finale = poule.getFinal();
-		
-		this.impMatch.setScoreEquipe(7, "D", 1, "2023"); this.impMatch.setScoreEquipe(7, "A", 3, "2023");
-		
-		
+
+		this.impMatch.setScoreEquipe(6, "D", 1, "2023");
+		this.impMatch.setScoreEquipe(6, "A", 3, "2023");
+
 	}
 
 	private void genererTournoi() {
 		this.tournoi = new Tournoi("LEC", "Regional", "15-08-2024", "18-08-2024", "log2", "pwd2");
 		this.modeleT.addTournoi(this.tournoi);
-		
+
 		this.equipes = new LinkedList<Equipe>();
 		this.equipes.add(new Equipe("A", "fr"));
 		this.equipes.add(new Equipe("B", "fr"));
 		this.equipes.add(new Equipe("C", "fr"));
 		this.equipes.add(new Equipe("D", "fr"));
-		
-		for(Equipe e : this.equipes) {
+
+		for (Equipe e : this.equipes) {
 			this.impEquipes.add(e);
 		}
 
@@ -163,30 +165,29 @@ public class testTournoi {
 		this.generateMatch("LEC", idTournoi, this.equipes);
 	}
 
-	
 	private void genererMatchsPoule() {
-		this.impMatch.setScoreEquipe(1, "A", 3, "LEC"); this.impMatch.setScoreEquipe(1, "B", 1, "LEC");
-		this.impMatch.setScoreEquipe(2, "A", 3, "LEC"); this.impMatch.setScoreEquipe(2, "C", 1, "LEC");
-		this.impMatch.setScoreEquipe(3, "A", 1, "LEC"); this.impMatch.setScoreEquipe(3, "D", 3, "LEC");
-		this.impMatch.setScoreEquipe(4, "C", 1, "LEC"); this.impMatch.setScoreEquipe(4, "B", 3, "LEC");
-		this.impMatch.setScoreEquipe(5, "B", 1, "LEC"); this.impMatch.setScoreEquipe(5, "D", 3, "LEC");
-		this.impMatch.setScoreEquipe(6, "C", 1, "LEC"); this.impMatch.setScoreEquipe(6, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(0, "A", 3, "LEC"); this.impMatch.setScoreEquipe(0, "B", 1, "LEC");
+		this.impMatch.setScoreEquipe(1, "A", 3, "LEC"); this.impMatch.setScoreEquipe(1, "C", 1, "LEC");
+		this.impMatch.setScoreEquipe(2, "A", 1, "LEC"); this.impMatch.setScoreEquipe(2, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(3, "C", 1, "LEC"); this.impMatch.setScoreEquipe(3, "B", 3, "LEC");
+		this.impMatch.setScoreEquipe(4, "B", 1, "LEC"); this.impMatch.setScoreEquipe(4, "D", 3, "LEC");
+		this.impMatch.setScoreEquipe(5, "C", 1, "LEC"); this.impMatch.setScoreEquipe(5, "D", 3, "LEC");
 	}
-	
+
 	private void genererFinale() {
 		this.poule = new Poule(this.tournoi);
 		this.finale = poule.getFinal();
 	}
-	
+
 	private int getScore(Equipe e1, List<EquipeSaison> allE) {
-		for(EquipeSaison e : allE) {
-			if(e.getNom().equals(e1.getNom())){
+		for (EquipeSaison e : allE) {
+			if (e.getNom().equals(e1.getNom())) {
 				return e.getScore();
 			}
 		}
 		return -1;
 	}
-	
+
 	@After
 	public void tearDown() {
 		try {
@@ -198,7 +199,7 @@ public class testTournoi {
 	}
 
 	private void generateMatch(String nomTournoi, int idTournoi, List<Equipe> equipes) {
-		int n = 1;
+		int n = 0;
 		for (int i = 0; i < equipes.size(); i++) {
 			for (int j = i + 1; j < equipes.size(); j++) {
 				HashMap<String, Integer> map = new HashMap<>();

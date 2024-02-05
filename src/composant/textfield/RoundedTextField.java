@@ -6,6 +6,11 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Un TextField avec les bords arrondis et un placeHolder
+ * @author Vivien
+ *
+ */
 public class RoundedTextField extends PlaceHolderTextField {
 
 	private static final long serialVersionUID = 1L;
@@ -13,6 +18,10 @@ public class RoundedTextField extends PlaceHolderTextField {
 	private Shape shape;
     
     
+    /**
+     * Crée un nouveau <code>RoundedTextField</code>
+     * @param placeHolderText le texte en placeHolder.
+     */
     public RoundedTextField(String placeHolderText) {
     	super(placeHolderText);
 		this.setBorder(new EmptyBorder(5,12,5,12));

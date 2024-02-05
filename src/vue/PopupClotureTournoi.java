@@ -7,12 +7,11 @@ import java.awt.Toolkit;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import composant.buttons.GoldUnderlinedButton;
-import controleur.ControleurPopupCloturePoule;
 import ressources.CharteGraphique;
+
 
 public class PopupClotureTournoi extends JDialog {
 
@@ -21,14 +20,12 @@ public class PopupClotureTournoi extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private final JPanel buttonPane = new JPanel();
-	private JTextArea textAreaMessage = new JTextArea();
+	private JLabel textAreaMessage = new JLabel();
+	private final JLabel lblCloture = new JLabel("Cloture");
 	private String nomTournoi;
-	private ControleurPopupCloturePoule controleur;
 
-	public PopupClotureTournoi(String nomTournoi, VueMatchsPouleArbitre vue) {
+	public PopupClotureTournoi(String nomTournoi) {
 		this.nomTournoi = nomTournoi;
-		this.controleur = new ControleurPopupCloturePoule(vue, this);
 		initComponant();
 	}
 
@@ -36,8 +33,9 @@ public class PopupClotureTournoi extends JDialog {
 		setPosition();
 		setBehavior();
 		drawPanel();
-		addComponent();
 		setTextArea();
+		setJLabel();
+		addComponent();
 	}
 
 	private void setPosition() {
@@ -60,36 +58,31 @@ public class PopupClotureTournoi extends JDialog {
 		contentPanel.setOpaque(false);
 		contentPanel.setBorder(new EmptyBorder(20, 50, 20, 50));
 		contentPanel.setLayout(new BorderLayout(0, 0));
-		buttonPane.setOpaque(false);
-		buttonPane.setBorder(new EmptyBorder(0, 50, 30, 50));
-		buttonPane.setLayout(new BorderLayout(0, 0));
+	}
+
+	private void setJLabel() {
+		lblCloture.setHorizontalAlignment(SwingConstants.CENTER);
+		this.lblCloture.setFont(CharteGraphique.TITLE);
+		this.lblCloture.setForeground(CharteGraphique.WHITE);
+		this.lblCloture.setBorder(new EmptyBorder(10, 0, 10, 0));
+		this.lblCloture.setVerticalAlignment(JLabel.CENTER);
 	}
 
 	private void setTextArea() {
-		textAreaMessage.setLineWrap(true);
-		textAreaMessage.setWrapStyleWord(true);
-		textAreaMessage.setForeground(CharteGraphique.WHITE);
-		textAreaMessage.setAlignmentX(JLabel.CENTER);
+		textAreaMessage.setForeground(CharteGraphique.GRAY);
 		textAreaMessage.setBorder(null);
 		textAreaMessage.setOpaque(false);
-		textAreaMessage.setEditable(false);
 		textAreaMessage.setFont(CharteGraphique.BUTTON_TEXT);
-		textAreaMessage.setText("Voulez-vous cloturer le tournoi " + this.nomTournoi + " ?");
+		textAreaMessage.setText("<html><p style=\"text-align:center;\">Le tournoi <span style=\"color:rgb("
+				+ CharteGraphique.GOLD.getRed() + ", " + CharteGraphique.GOLD.getGreen() + ", "
+				+ CharteGraphique.GOLD.getBlue() + ");\">" + this.nomTournoi
+				+ "</span> est clos, vous allez être déconnecté de votre session</p><html>");
 	}
 
 	private void addComponent() {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 		contentPanel.add(textAreaMessage, BorderLayout.CENTER);
-
-		GoldUnderlinedButton supprimer = new GoldUnderlinedButton("Valider");
-		GoldUnderlinedButton annuler = new GoldUnderlinedButton("Annuler");
-
-		supprimer.addActionListener(controleur);
-		annuler.addActionListener(controleur);
-
-		buttonPane.add(supprimer, BorderLayout.EAST);
-		buttonPane.add(annuler, BorderLayout.WEST);
+		contentPanel.add(this.lblCloture, BorderLayout.NORTH);
 	}
 
 	public String getNomTournoi() {

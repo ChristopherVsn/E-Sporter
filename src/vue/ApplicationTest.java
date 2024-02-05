@@ -42,18 +42,8 @@ public class ApplicationTest {
 		Tournoi t = tournoi.getByName("TournoiA");
 		ImpEquipeDAO equipe = new ImpEquipeDAO();
 		Equipe e = equipe.getByName("Equipe6");
-		// f.add(new PopupInfoTournoi(t));
-		// f.add(new VueMatchsPouleArbitre(t));
-		// f.add(new VueTournoiLance(t));
-		// f.add(new VueCreationTournoi());
 
-		// f.add(new VueConfigurationTournoi(t));
-		 f.add(Pages.IDENTIFICATION);
-		// f.add(new VueListeTournois());
-		// f.add(new VueDetailEquipe(e, Pages.ACCUEIL));
-		// f.add(new VueListeTournois());
-		// f.add(new VueMatchsPouleArbitre(t));
-		// f.add(new VueListeTournois());
+		f.add(Pages.IDENTIFICATION);
 
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setTitle("Création equipes");

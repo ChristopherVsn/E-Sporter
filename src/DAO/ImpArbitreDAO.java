@@ -11,18 +11,34 @@ import java.util.Optional;
 
 import modele.Arbitre;
 
+/**
+ * Implémentation de l'accès aux données pour la gestion des arbitres.
+ */
 public class ImpArbitreDAO implements ArbitreDAO {
 
 	private Connection c;
 
+	/**
+     * Constructeur de la classe ImpArbitreDAO.
+     */
 	public ImpArbitreDAO() {
 		this.c = ConnexionDB.getConnexionDB().getConnexion();
 	}
 
-	public ImpArbitreDAO(Connection co) {
-		this.c = co;
+	/**
+     * Constructeur de la classe ImpArbitreDAO avec connexion personnalisée.
+     *
+     * @param c connexion personnalisée
+     */
+	public ImpArbitreDAO(Connection c) {
+		this.c = c;
 	}
 
+	/**
+     * Obtient la liste de tous les arbitres.
+     *
+     * @return liste de tous les arbitres
+     */
 	@Override
 	public List<Arbitre> getAll() {
 		List<Arbitre> arbitres = new ArrayList<>();
@@ -30,7 +46,7 @@ public class ImpArbitreDAO implements ArbitreDAO {
 		try (Statement statement = this.c.createStatement()) {
 			ResultSet rs = statement.executeQuery(req);
 			while (rs.next()) {
-				arbitres.add(new Arbitre(rs.getInt("IdArbitres"),rs.getString("Nom"), rs.getString("Prenom")));
+				arbitres.add(new Arbitre(rs.getInt("IdArbitres"), rs.getString("Nom"), rs.getString("Prenom")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -38,6 +54,12 @@ public class ImpArbitreDAO implements ArbitreDAO {
 		return arbitres;
 	}
 
+	/**
+     * Obtient un arbitre par son identifiant.
+     *
+     * @param id identifiant de l'arbitre
+     * @return arbitre correspondant à l'identifiant
+     */
 	@Override
 	public Optional<Arbitre> getById(Integer... id) {
 		String req = "SELECT * FROM Arbitres WHERE IdArbitres = ?";
@@ -57,6 +79,13 @@ public class ImpArbitreDAO implements ArbitreDAO {
 		return Optional.empty();
 	}
 
+	/**
+     * Obtient un arbitre par son nom et prénom.
+     *
+     * @param nom    nom de l'arbitre
+     * @param prenom prénom de l'arbitre
+     * @return arbitre correspondant au nom et prénom
+     */
 	public Arbitre getByNP(String nom, String prenom) {
 		String req = "SELECT * FROM Arbitres WHERE Nom = ? AND Prenom = ?";
 		Arbitre arb = null;
@@ -73,6 +102,12 @@ public class ImpArbitreDAO implements ArbitreDAO {
 		return arb;
 	}
 
+	/**
+     * Ajoute un arbitre à la base de données.
+     *
+     * @param value arbitre à ajouter
+     * @return true si l'ajout a réussi, false sinon
+     */
 	@Override
 	public boolean add(Arbitre value) {
 		boolean b = false;
@@ -92,6 +127,12 @@ public class ImpArbitreDAO implements ArbitreDAO {
 		return b;
 	}
 
+	/**
+     * Supprime un arbitre de la base de données.
+     *
+     * @param value arbitre à supprimer
+     * @return true si la suppression a réussi, false sinon
+     */
 	@Override
 	public boolean delete(Arbitre value) {
 		String query = String.format("SELECT * FROM Arbitres WHERE Nom = '%s' AND Prenom = '%s'", value.getNom(),
@@ -104,7 +145,6 @@ public class ImpArbitreDAO implements ArbitreDAO {
 				statement.executeUpdate(deleteQuery);
 				return true;
 			} else {
-				System.out.println("Arbitre non présent dans la base de données");
 				return false;
 			}
 		} catch (SQLException e) {
@@ -113,6 +153,12 @@ public class ImpArbitreDAO implements ArbitreDAO {
 		}
 	}
 
+	/**
+     * Met à jour les informations d'un arbitre dans la base de données (non implémenté).
+     *
+     * @param value nouvelle information de l'arbitre
+     * @return toujours false, car non implémenté
+     */
 	@Override
 	public boolean update(Arbitre value) {
 		throw new UnsupportedOperationException("Unimplemented method 'update'");

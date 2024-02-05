@@ -21,6 +21,11 @@ public class Poule {
 	private ImpTournoiDAO impTournoi;
 	private Tournoi tournoi;
 
+	/**
+	 * Classe permettant la création d'une poule pour un tournoi
+	 * 
+	 * @param Tournoi
+	 */
 	public Poule(Tournoi tournoi) {
 		this.impMatchs = new ImpMatchsDAO();
 		this.impTournoi = new ImpTournoiDAO();
@@ -31,6 +36,12 @@ public class Poule {
 		this.impTournoi = new ImpTournoiDAO();
 	}
 
+	/**
+	 * Méthode private permettant d'avoir une Map avec pour clé le nom des équipes
+	 * et pour valeur leur score
+	 * 
+	 * @return
+	 */
 	private Map<String, Integer> scoreByEquipe() {
 		this.matchs.stream().forEach(m -> m.getEquipes());
 		Map<String, Integer> scoreByEquipe = matchs.stream().flatMap(m -> m.getEquipes().entrySet().stream())
@@ -44,12 +55,11 @@ public class Poule {
 	 * @return Matchs
 	 */
 	public Match getFinal() {
-
 		this.matchs = this.impMatchs.getMatchsByTournoi(tournoi);
 		int nbEquipes = this.impTournoi.getNbEquipesByTournoi(this.tournoi);
-		this.idFinal = ((nbEquipes * (nbEquipes - 1))/2);
-		for(Match match:this.matchs) {
-			if(match.getIdMatch() == idFinal) {
+		this.idFinal = ((nbEquipes * (nbEquipes - 1)) / 2);
+		for (Match match : this.matchs) {
+			if (match.getIdMatch() == idFinal) {
 				return match;
 			}
 		}
@@ -61,7 +71,7 @@ public class Poule {
 	/**
 	 * Sélectionne les 2 équipes qui passeront à la finale
 	 * 
-	 * @return une liste composait de 2 noms déquipes sélectionner pour la finale
+	 * @return une liste composait de 2 noms d'équipes sélectionner pour la finale
 	 */
 	public Map<String, Integer> getEquipeForFinal() {
 		Map<String, Integer> scoreByEquipe = scoreByEquipe();
@@ -82,6 +92,8 @@ public class Poule {
 	}
 
 	/**
+	 * Méthode private qui renvoie la liste de toutes les équipes qui sont premières
+	 * 
 	 * @param un map contenant toutes les équipes associer à leur score
 	 * @return le ou les équipes qui ont le plus haut score
 	 */
@@ -90,6 +102,8 @@ public class Poule {
 	}
 
 	/**
+	 * Méthode private qui revoie la liste de toutes les équipes qui sont secondes
+	 * 
 	 * @param un map contenant toutes les équipes associer à leur score
 	 * @param le map d'où des équipes qui ont le plus haut score
 	 * @return le ou les équipes qui ont le second plus haut score
@@ -100,9 +114,10 @@ public class Poule {
 				.max(Map.Entry.<String, Integer>comparingByValue()));
 	}
 
-
 	/**
-	 * @param scorebyequipe map des équipes associés à leur score
+	 * Méthode private qui renvoie les équipes pour un score donné
+	 * 
+	 * @param scorebyequipe map des équipes associées à leur score
 	 * @param score
 	 * @return renvoie une liste composer de nom des équipes associer au score
 	 */
@@ -112,6 +127,8 @@ public class Poule {
 	}
 
 	/**
+	 * Méthode private pour sélectionner les équipes qualifiées pour la finale
+	 * 
 	 * @param liste des équipes qui ont le plus haut score
 	 * @param liste des équipes qui ont le second plus haut score
 	 * @return une liste composait de 2 équipes
@@ -134,31 +151,27 @@ public class Poule {
 	}
 
 	/**
-	 * quand égalité choix d'une équipe par le world rank sinon aléatoire
+	 * quand égalité lors du choix d'une équipe, on les départage par le world rank
+	 * le plus élévé sinon par aléatoire
 	 * 
 	 * @param liste de noms d'équipes
 	 * @return renvoie un nom d'équipe
 	 */
 	public static List<String> getRandomString(List<String> list, int nb) {
 
-	    EquipesSaison equipes = EquipesSaison.getInstance(Calendar.getInstance().get(Calendar.YEAR));
-	    List<String> teamsSelected = new ArrayList<>();
-	    // Obtenir le WR le plus élevé parmi toutes les équipes de la liste
-	    list.stream()
-	    .sorted((x,y)->{if(equipes.getWrByName(x) > equipes.getWrByName(y)) {
-	    					return 1;
-	    } else if(equipes.getWrByName(x) == equipes.getWrByName(y)) {
-	    	return 0;
-	    } else {
-	    	return -1;
-	    }})
-	    .map(x -> equipes.getWrByName(x));
-//	    .forEach(System.out::println);
-	    
-	    return list;
+		EquipesSaison equipes = EquipesSaison.getInstance(Calendar.getInstance().get(Calendar.YEAR));
+		List<String> teamsSelected = new ArrayList<>();
+		// Obtenir le WR le plus élevé parmi toutes les équipes de la liste
+		list.stream().sorted((x, y) -> {
+			if (equipes.getWrByName(x) > equipes.getWrByName(y)) {
+				return 1;
+			} else if (equipes.getWrByName(x) == equipes.getWrByName(y)) {
+				return 0;
+			} else {
+				return -1;
+			}
+		}).map(x -> equipes.getWrByName(x));
+		return list;
 	}
-
-    public void supprimerTournoi(Tournoi tournoi2) {
-    }
 
 }

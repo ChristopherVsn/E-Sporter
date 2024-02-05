@@ -147,10 +147,8 @@ public class Header extends JPanel {
 		btnReduce.setActionCommand("reduce");
 		
 		if(this.isFullScreen()) {
-			System.out.println("full");
 			btnFullScreen.setActionCommand("minScreen");
 		} else {
-			System.out.println("min");
 			btnFullScreen.setActionCommand("fullScreen");
 		}
 		
@@ -166,7 +164,6 @@ public class Header extends JPanel {
 		int widthScreen = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 		Frame f = this.getFrame();
 		if(f != null) {
-			System.out.println("frame not null");
 			int heightFrame = f.getHeight();
 			int widthFrame = f.getWidth();
 			return ((heightFrame == heightScreen) && (widthFrame == widthScreen));

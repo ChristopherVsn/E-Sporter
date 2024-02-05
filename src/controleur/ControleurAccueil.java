@@ -38,14 +38,8 @@ public class ControleurAccueil implements ActionListener {
 			case "palmares":
 				this.vue.changePage(new VuePalmares());
 				break;
-			case "historique":
-				// this.vue.fermerVue(this.vue, new VueHistorique());
-				break;
-
 			case "tournois":
 				if (this.modele.turnamentInProcess()) {
-					// Optimisation possible : créer une méthode update tournoi dans la vue
-					// TournoiLance
 					this.vue.changePage(new VueTournoiLance(this.modele.getTurnamentInProcess()));
 				} else {
 					Pages.LISTE_TOURNOIS.remplirTable(this.modeleTransitifTournoi.getAll());

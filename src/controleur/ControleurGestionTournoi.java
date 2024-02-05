@@ -36,11 +36,8 @@ public class ControleurGestionTournoi implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Before " + this.etat);
         if (equipeSelectionne != null)
-            System.out.println("EquipeSectionne : " + this.equipeSelectionne.getNom());
         if (equipeSelectionneTable != null)
-            System.out.println("EquipeSectionneTable : " + this.equipeSelectionneTable.getNom());
         switch (this.etat) {
             case ATTENTE_SELECTION:
                 if (!this.vue.getComboBoxEquipes().getSelectedItem().equals("Sélectionnez une équipe")) {
@@ -90,14 +87,19 @@ public class ControleurGestionTournoi implements ActionListener, MouseListener {
 
                 break;
         }
-        System.out.println("After  " + this.etat + "\n");
 
     }
 
+    /**
+     * @return les noms des équipes disponibles
+     */
     public List<String> getEquipes() {
         return this.modele.getEquipesDispos();
     }
 
+    /**
+     * @return les noms des équipes sélectionnées
+     */
     public List<String> getEquipesParticipantes() {
         return this.modele.getEquipesSelectionnees();
     }
